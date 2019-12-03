@@ -1,7 +1,7 @@
-#Caesar Shift Encoder
-print("Welcome to the Caesar Shift Encoder.")
+#Caesar Shift Encoder/Decoder
+
+print("Welcome to the Caesar Shift Encoder/Decoder.")
 alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-print(len(alphabet))
 punctuation = " .?!:;,'\"\\"
 use_default_alphabet = input("Would you like to use the standard English alphabet (ABCDEFGHIJKLMNOPQRSTUVWXYZ)?\nEnter (y/n): ").upper()
 while use_default_alphabet != 'Y' and use_default_alphabet != 'N':
@@ -9,9 +9,17 @@ while use_default_alphabet != 'Y' and use_default_alphabet != 'N':
 
 if use_default_alphabet == 'N':
     alphabet = input("Please enter your custom alphabet (in uppercase letters): ").upper()
-    # should I check for duplicates?
+    # TODO: check for duplicates(?)
 
-ciphertext = input("Enter your text to be encrypted: ").upper()
+encrypt_decrypt = input("Would you like to encrypt or decrypt your text?\nEnter (e/d): ").upper()
+while encrypt_decrypt != 'E' and encrypt_decrypt != 'D':
+    encrypt_decrypt = input("Unrecognized option. Please enter either e or d to indicate whether you would like to encrypt or decrypt your text: ").upper()
+
+if encrypt_decrypt == 'E':
+    ciphertext = input("Enter your text to be encrypted: ").upper()
+else:
+    ciphertext = input("Enter your text to be decrypted: ").upper()
+
 for i in range(len(ciphertext)):
     if ciphertext[i] not in alphabet and ciphertext[i] not in punctuation:
         raise Exception("Character " + ciphertext[i] + " at index " + str(i) + " is not in the alphabet.")
@@ -26,29 +34,58 @@ while True:
         num_shift = input("Please enter a whole number amount to shift by: ")
 
 num_shift %= len(alphabet)
-encoded_text = ""
 
-if use_default_alphabet == 'N':    
-    for i in range(len(ciphertext)):
-        if ciphertext[i] in punctuation:
-            encoded_text += ciphertext[i]
-        else:
-            old_char = ord(ciphertext[i]) - ord('A')
-            new_char = chr(ord('A') + ((old_char + num_shift) % len(alphabet)))
-            encoded_text += new_char
-    print(encoded_text)
+if encrypt_decrypt == 'E':
+    encrypted_text = ""
+    if use_default_alphabet == 'Y':    
+        for i in range(len(ciphertext)):
+            if ciphertext[i] in punctuation:
+                encrypted_text += ciphertext[i]
+            else:
+                old_char = ord(ciphertext[i]) - ord('A')
+                new_char = chr(ord('A') + ((old_char + num_shift) % len(alphabet)))
+                encrypted_text += new_char
+        print(encrypted_text)
 
+    else:
+        letterPos = dict()
+        for i in range(len(ciphertext)):
+            if ciphertext[i] in punctuation:
+                encrypted_text += ciphertext[i]
+            else:
+                if ciphertext[i] not in letterPos:
+                    targetPos = alphabet.find(ciphertext[i])
+                    letterPos[ciphertext[i]] = targetPos
+
+                old_char = letterPos[ciphertext[i]]
+                new_char = alphabet[(old_char + num_shift) % len(alphabet)]
+                encrypted_text += new_char
+        print(encrypted_text)
 else:
-    letterPos = dict()
-    for i in range(len(ciphertext)):
-        if ciphertext[i] in punctuation:
-            encoded_text += ciphertext[i]
-        else:
-            if ciphertext[i] not in letterPos:
-                targetPos = alphabet.find(ciphertext[i])
-                letterPos[ciphertext[i]] = targetPos
+    decrypted_text = ""
+    if use_default_alphabet == 'Y':    
+        for i in range(len(ciphertext)):
+            if ciphertext[i] in punctuation:
+                decrypted_text += ciphertext[i]
+            else:
+                old_char = ord(ciphertext[i]) - ord('A')
+                new_char = chr(ord('A') + ((old_char - num_shift) % len(alphabet)))
+                decrypted_text += new_char
+        print(decrypted_text)
 
-            old_char = letterPos[ciphertext[i]]
-            new_char = alphabet[(old_char + num_shift) % len(alphabet)]
-            encoded_text += new_char
-    print(encoded_text)
+    else:
+        letterPos = dict()
+        for i in range(len(ciphertext)):
+            if ciphertext[i] in punctuation:
+                decrypted_text += ciphertext[i]
+            else:
+                if ciphertext[i] not in letterPos:
+                    targetPos = alphabet.find(ciphertext[i])
+                    letterPos[ciphertext[i]] = targetPos
+
+                old_char = letterPos[ciphertext[i]]
+                new_char = alphabet[(old_char - num_shift) % len(alphabet)]
+                decrypted_text += new_char
+        print(decrypted_text)
+
+leave = input("Press any key to exit.")
