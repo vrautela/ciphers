@@ -1,8 +1,8 @@
 #Caesar Shift Encoder/Decoder
-
-print("Welcome to the Caesar Shift Encoder/Decoder.")
 alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 punctuation = " .?!:;,'\"\\"
+
+print("Welcome to the Caesar Shift Encoder/Decoder.")
 use_default_alphabet = input("Would you like to use the standard English alphabet (ABCDEFGHIJKLMNOPQRSTUVWXYZ)?\nEnter (y/n): ").upper()
 while use_default_alphabet != 'Y' and use_default_alphabet != 'N':
     use_default_alphabet = input("Unrecognized option. Please enter either y or n to indicate whether you would like to use the Standard English Alphabet: ").upper() 
@@ -23,7 +23,7 @@ else:
 for i in range(len(ciphertext)):
     if ciphertext[i] not in alphabet and ciphertext[i] not in punctuation:
         raise Exception("Character " + ciphertext[i] + " at index " + str(i) + " is not in the alphabet.")
-print(ciphertext)
+#print(ciphertext)
 
 num_shift = input("Enter the amount to shift by: ")
 while True:
@@ -88,4 +88,4 @@ else:
                 decrypted_text += new_char
         print(decrypted_text)
 
-leave = input("Press any key to exit.")
+leave = input("Press enter to exit.")
