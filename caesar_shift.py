@@ -23,7 +23,6 @@ else:
 for i in range(len(ciphertext)):
     if ciphertext[i] not in alphabet and ciphertext[i] not in punctuation:
         raise Exception("Character " + ciphertext[i] + " at index " + str(i) + " is not in the alphabet.")
-#print(ciphertext)
 
 num_shift = input("Enter the amount to shift by: ")
 while True:
